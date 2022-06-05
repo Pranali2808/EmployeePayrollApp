@@ -16,6 +16,7 @@ window.addEventListener('DOMContentLoaded',(event) =>{
       }
       try{
         (new EmployeePayrollData()).name = name.value;
+        textError.textContent = "";
       }
       catch(ex){
         textError.textContent = ex;
@@ -43,6 +44,7 @@ window.addEventListener('DOMContentLoaded',(event) =>{
       try
       {
         let employeePayrollData = createEmployeePayroll();
+        createAndUpdateStorage(employeePayrollData);
       } 
       catch(ex)
       {
@@ -64,7 +66,7 @@ window.addEventListener('DOMContentLoaded',(event) =>{
       employeePayrollData.salary = getInputValueById('#salary');
       employeePayrollData.note = getInputValueById('#notes');
       let date = getInputValueById('#day')+" "+getInputValueById('#month')+" "+getInputValueById('#year');
-      employeePayrollData.startDate = new Date(Date.parse(date));
+      employeePayrollData.startDate = new Date(date);
       alert(employeePayrollData.toString());
       return employeePayrollData;
     }
@@ -76,4 +78,16 @@ window.addEventListener('DOMContentLoaded',(event) =>{
         if(item.checked) setItems.push(item.value);
       });
       return setItems;
+    }
+    
+    function createAndUpdateStorage(EmpPayrollData){
+      let empPayrollList = JSON.parse(localStorage.getItem("empPayrollList"));
+    
+      if(empPayrollList != undefined){
+          empPayrollList.push(EmpPayrollData);
+      } else{
+          empPayrollList = [EmpPayrollData]
+      }
+      alert(empPayrollList.toString());
+      localStorage.setItem("empPayrollList", JSON.stringify(empPayrollList))
     }
